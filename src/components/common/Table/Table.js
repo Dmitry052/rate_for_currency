@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './Table.scss';
 
 type Props = {
   indexRow: boolean,
@@ -43,4 +45,4 @@ const Table = ({ indexRow = false, head = [], body = [], classes = '' }: Props) 
   </table>
 );
 
-export default Table;
+export default withStyles(s)(Table);

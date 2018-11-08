@@ -17,6 +17,13 @@ type Props = {
 };
 
 class Exchanger extends React.Component<Props> {
+  constructor() {
+    super();
+
+    this.state = {
+      part: [''],
+    };
+  }
   componentDidMount() {
     if (typeof document !== 'undefined') {
       const element = document.getElementById('loader');
@@ -25,6 +32,9 @@ class Exchanger extends React.Component<Props> {
       }
     }
 
+    this.updateRender();
+    window.addEventListener('resize', this.updateRender);
+
     const { currency } = this.props;
     // TODO: request to API
     const cross = this.getCrossing(currency);
@@ -32,7 +42,7 @@ class Exchanger extends React.Component<Props> {
   }
 
   getCrossing = (currency: Array<string>) => {
-    const cross = [];
+    const cross: Array<Array<string>> = [];
     let index = 0;
 
     // X
@@ -71,6 +81,47 @@ class Exchanger extends React.Component<Props> {
     return cross;
   };
 
+  getResultRow = (
+    item: Array<string>,
+    cross: Array<Array<string>>,
+    i: number,
+    result: Array<Component>,
+    rate: Object<{}>,
+    startIndex: number = 0,
+    rowLen: number,
+  ) => {
+    let j = 0;
+
+    while (j <= item.length && j <= startIndex + rowLen) {
+      if (j === 1) {
+        j += startIndex;
+      }
+
+      const from = cross[i][0];
+      const to = cross[0][j];
+
+      if (from && to) {
+        if (i > 0 && from === to) {
+          result.push(<Rate key={`node-${from}-${to}`} empty value={cross[i][j]} />);
+        } else {
+          result.push(
+            <Rate
+              key={`node-${from}-${to}`}
+              indexX={i}
+              from={from}
+              to={to}
+              data={rate[`${from}/${to}`]}
+              value={cross[i][j]}
+              handleChangeRate={this.handleChangeRate}
+            />,
+          );
+        }
+      }
+      j += 1;
+    }
+  };
+
+  // Set index rate
   handleChangeRate = (e: Event) => {
     if (e.target) {
       const field = e.target.getAttribute('field');
@@ -80,39 +131,62 @@ class Exchanger extends React.Component<Props> {
     }
   };
 
-  render() {
-    const { cross, rate } = this.props;
+  updateRender = e => {
+    let innerWidth = 0;
+    if (e && e.target) {
+      innerWidth = e.target.innerWidth;
+    } else {
+      innerWidth = window.innerWidth;
+    }
 
+    if (innerWidth >= 992 && innerWidth <= 1200) {
+      this.setState({
+        part: ['', ''],
+      });
+    } else if (innerWidth >= 767 && innerWidth < 992) {
+      this.setState({
+        part: ['', '', ''],
+      });
+    } else if (innerWidth >= 541 && innerWidth < 767) {
+      this.setState({
+        part: ['', '', '', ''],
+      });
+    } else if (innerWidth >= 320 && innerWidth < 541) {
+      this.setState({
+        part: ['', '', '', '', ''],
+      });
+    } else if (innerWidth > 993) {
+      this.setState({
+        part: [''],
+      });
+    }
+  };
+
+  render() {
+    const { cross, rate, currency } = this.props;
+    let startIndex = 0;
     return (
       <div className="container">
-        <div className="row">
-          <div className={s.cross}>
-            {cross.map((item, i) => {
-              const result = [];
-              item.forEach((item2, j) => {
-                const from = cross[i][0];
-                const to = cross[0][j];
+        {this.state.part.map((value, index) => {
+          // Length current row
+          const rowLen = currency.length - this.state.part.length + 1;
 
-                if (i > 0 && from === to) {
-                  result.push(<Rate key={`node-${from}-${to}`} empty value={cross[i][j]} />);
-                } else {
-                  result.push(
-                    <Rate
-                      key={`node-${from}-${to}`}
-                      indexX={i}
-                      from={from}
-                      to={to}
-                      data={rate[`${from}/${to}`]}
-                      value={cross[i][j]}
-                      handleChangeRate={this.handleChangeRate}
-                    />,
-                  );
-                }
-              });
-              return result;
-            })}
-          </div>
-        </div>
+          // Index start column
+          if (index !== 0) {
+            startIndex += rowLen;
+          }
+
+          return (
+            <div className={s.cross}>
+              {cross.map((item, i) => {
+                const result = [];
+                this.getResultRow(item, cross, i, result, rate, startIndex, rowLen);
+
+                return result.length > 1 ? <div className={s.row}>{result}</div> : null;
+              })}
+            </div>
+          );
+        })}
       </div>
     );
   }
