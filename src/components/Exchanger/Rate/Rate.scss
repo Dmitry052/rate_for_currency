@@ -1,0 +1,95 @@
+.node {
+  // width: 190px;
+  width: 16.66%;
+  height: 130px;
+  border: 1px solid #b7b7b7;
+}
+
+.header {
+  height: 50px;
+}
+// ##########################
+
+.labels {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+// ##########################
+// Empty block
+.empty {
+  background: linear-gradient(45deg, #e8dbd2, #c5dde8);
+}
+
+.calc span {
+  display: block;
+}
+
+.data {
+  font-size: 12px;
+
+  input {
+    outline: none;
+  }
+  // ##########################
+  // Lact and current rate
+  .rate {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 8px;
+
+    sub {
+      bottom: 0.54em;
+      left: 3em;
+    }
+  }
+
+  .rate span {
+    padding-top: 4px;
+  }
+
+  .rate input {
+    width: 50%;
+    border: none;
+    color: #0c5460;
+    background-color: #d1ecf1;
+    z-index: 1;
+  }
+}
+// ##########################
+.info {
+  display: flex;
+  flex-direction: row;
+}
+
+.course > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.course,
+.calc {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.up {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.down {
+  color: #721c24;
+  background-color: #f8d7da;
+}
+
+.middle {
+  color: #856404;
+  background-color: #fff3cd;
+}

@@ -1,0 +1,30 @@
+.input {
+  display: flex;
+  margin-bottom: 10px;
+
+  .editIcon {
+    border: none;
+    padding: 0;
+    margin-right: 10px;
+    color: #008000;
+    outline: none;
+
+    &:hover {
+      color: #a72626;
+      cursor: pointer;
+    }
+  }
+
+  span {
+    width: 45%;
+    font-weight: 200;
+
+    &:hover {
+      cursor: default;
+    }
+  }
+}
+
+.afterTitle {
+  padding-left: 5px;
+}

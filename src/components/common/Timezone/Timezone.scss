@@ -1,0 +1,13 @@
+.timezoneBlock {
+  display: flex;
+  margin-bottom: 10px;
+
+  span {
+    width: 45%;
+    font-weight: 200;
+
+    &:hover {
+      cursor: default;
+    }
+  }
+}

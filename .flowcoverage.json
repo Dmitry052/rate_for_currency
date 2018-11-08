@@ -1,0 +1,18 @@
+{
+  "concurrentFiles": 1,
+  "excludeGlob": [
+    "node_modules/**",
+    "src/**/*.test.js",
+    "src/**/_*.js",
+    "src/client.js",
+    "src/DOMUtils.js",
+    "src/components/App.js",
+    "src/components/Html.js",
+    "src/config.js",
+    "src/history.js",
+    "src/router.js"
+  ],
+  "includeGlob": ["src/**/*.js"],
+
+  "type": "html"
+}
